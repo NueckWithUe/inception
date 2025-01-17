@@ -1,4 +1,4 @@
-service:
+services:
   nginx:
     build:
       context: .
