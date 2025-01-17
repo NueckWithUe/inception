@@ -3,7 +3,9 @@ services:
     build:
       context: .
       dockerfile: ./requirements/nginx/Dockerfile
+    container-name: nginx
   mariadb:
     build:
       context: .
       dockerfile: ./requirements/mariadb/Dockerfile
+    container-name: mariadb
