@@ -1,0 +1,5 @@
+service:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./requirements/nginx/Dockerfile
