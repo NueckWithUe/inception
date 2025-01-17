@@ -3,3 +3,7 @@ services:
     build:
       context: .
       dockerfile: ./requirements/nginx/Dockerfile
+  mariadb:
+    build:
+      context: .
+      dockerfile: ./requirements/mariadb/Dockerfile
