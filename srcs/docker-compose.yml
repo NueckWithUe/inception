@@ -1,11 +1,53 @@
 services:
-  nginx:
-    build:
-      context: .
-      dockerfile: ./requirements/nginx/Dockerfile
-    container-name: nginx
   mariadb:
+    container_name: mariadb
     build:
       context: .
       dockerfile: ./requirements/mariadb/Dockerfile
-    container-name: mariadb
+      args:
+        - DB_NAME=$DB_NAME
+        - DB_USER=$DB_USER
+        - DB_PASS=$DB_PASS
+    networks:
+      - inception
+    volumes:
+      - vol_mariadb:/var/lib/mysql
+    ports:
+      - 3306:3306
+    restart: on-failure
+  wordpress:
+    container_name: wordpress
+    build:
+      context: .
+      dockerfile: ./requirements/wordpress/Dockerfile
+      args:
+        - DB_NAME=$DB_NAME
+        - DB_USER=$DB_USER
+        - DB_PASS=$DB_PASS
+    networks:
+      - inception
+    volumes:
+      - vol_wordpress:/var/www/
+    ports:
+      - 9000:9000
+    restart: on-failure
+    depends_on:
+      - mariadb
+
+volumes:
+  vol_mariadb:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/$USER/data/vol_mariadb
+  vol_wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/$USER/data/vol_wordpress
+
+networks:
+  inception:
+    name: inception
