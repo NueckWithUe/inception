@@ -29,7 +29,7 @@ define( 'DB_USER', $DB_USER );
 define( 'DB_PASSWORD', $DB_PASS );
 
 /** Database hostname */
-define( 'DB_HOST', 'localhost' );
+define( 'DB_HOST', 'nnagel.42.fr' );
 
 /** Database charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8' );

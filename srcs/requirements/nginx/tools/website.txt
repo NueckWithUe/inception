@@ -1,0 +1,9 @@
+server {
+	listen 433;
+	listen [::]:443;
+
+	server_name nnagel.42.fr www.nnagel.42.fr;
+
+	root /var/www/nnagel.42.fr/;
+	index index.html;
+}

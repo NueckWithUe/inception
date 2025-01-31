@@ -20,4 +20,4 @@ USER mysql
 
 COPY ./requirements/mariadb/tools/init.sql /docker-entrypoint-initdb.d/
 
-ENTRYPOINT ["/usr/sbin/mysqld"]
+CMD ["/usr/sbin/mysqld"]

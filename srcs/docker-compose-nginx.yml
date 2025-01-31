@@ -1,0 +1,10 @@
+services:
+  nginx:
+    container_name: nginx
+    build:
+      context: .
+      dockerfile: ./requirements/nginx/Dockerfile
+      args:
+        - DOMAIN_NAME=$DOMAIN_NAME
+    ports:
+      - 433:433
