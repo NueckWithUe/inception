@@ -8,7 +8,7 @@ ENV DB_NAME=$DB_NAME
 ENV DB_USER=$DB_USER
 ENV DB_PASS=$DB_PASS
 
-RUN apt-get update && apt-get install -y --no-cache mariadb-server
+RUN apt-get update && apt-get install -y mariadb-server
 
 RUN mkdir -p /run/mysqld /var/lib/mysql && chmod 777 /run/mysqld /var/lib/mysql
 
@@ -20,4 +20,4 @@ USER mysql
 
 COPY ./requirements/mariadb/tools/init.sql /docker-entrypoint-initdb.d/
 
-CMD ["/usr/sbin/mysqld"]
+ENTRYPOINT ["/usr/sbin/mysqld"]

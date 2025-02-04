@@ -18,7 +18,7 @@ conf:
 			docker compose -f $(CONFIG_FILE) config
 
 clean:		down
-			docker image rm srcs-mariadb:latest srcs-wordpress:latest
+			docker image rm srcs-mariadb:latest srcs-wordpress:latest srcs-nginx:latest
 
 re:			clean up
 

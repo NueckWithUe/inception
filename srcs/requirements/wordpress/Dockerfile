@@ -8,7 +8,7 @@ ENV DB_NAME=$DB_NAME
 ENV DB_USER=$DB_USER
 ENV DB_PASS=$DB_PASS
 
-RUN apt-get update && apt-get install --no-cache -y \
+RUN apt-get update && apt-get install -y \
 	php-fpm \
 	php-mysql \
 	php-cli \
@@ -31,9 +31,8 @@ WORKDIR /var/www/html
 RUN wget https://wordpress.org/latest.tar.gz && \
 	tar -xzf latest.tar.gz && \
 	mv wordpress/* . && \
-	rm -rf wordpress latest.tar.gz
-
-EXPOSE 9000
+	rm -rf wordpress latest.tar.gz && \
+	sed -i 's|^listen = /run/php/php7.4-fpm.sock|listen = 9000|' /etc/php/7.4/fpm/pool.d/www.conf
 
 COPY ./requirements/wordpress/tools/init_php.sh .
 
