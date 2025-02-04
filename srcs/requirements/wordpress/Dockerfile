@@ -1,12 +1,12 @@
-FROM debian:oldstable
+FROM debian:bullseye
 
 ARG DB_NAME
 ARG DB_USER
 ARG DB_PASS
 
-ENV DB_NAME=$DB_NAME
-ENV DB_USER=$DB_USER
-ENV DB_PASS=$DB_PASS
+ENV DB_NAME=${DB_NAME}
+ENV DB_USER=${DB_USER}
+ENV DB_PASS=${DB_PASS}
 
 RUN apt-get update && apt-get install -y \
 	php-fpm \
@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -y \
 	unzip \
 	curl \
 	mariadb-client \
+	netcat \
 	&& apt-get clean
 
 WORKDIR /var/www/html
@@ -37,5 +38,7 @@ RUN wget https://wordpress.org/latest.tar.gz && \
 COPY ./requirements/wordpress/tools/init_php.sh .
 
 RUN bash init_php.sh && rm init_php.sh
+
+RUN mkdir -p /run/php
 
 CMD ["/usr/sbin/php-fpm7.4", "-F"]
