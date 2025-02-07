@@ -2,7 +2,7 @@ FROM debian:bullseye
 
 ARG DOMAIN_NAME
 
-RUN apt-get update && apt-get install -y nginx openssl netcat && apt-get upgrade
+RUN apt-get update && apt-get install -y nginx openssl && apt-get upgrade
 
 COPY ./requirements/nginx/tools/website.txt .
 

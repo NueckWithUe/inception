@@ -4,10 +4,8 @@ services:
     build:
       context: .
       dockerfile: ./requirements/mariadb/Dockerfile
-      args:
-        - DB_NAME=$DB_NAME
-        - DB_USER=$DB_USER
-        - DB_PASS=$DB_PASS
+    env_file:
+      - .env
     networks:
       - inception
     volumes:
@@ -28,7 +26,7 @@ services:
     networks:
       - inception
     volumes:
-      - vol_wordpress:/var/www/
+      - vol_wordpress:/var/www/html
     ports:
       - 9000:9000
     restart: on-failure
@@ -45,7 +43,7 @@ services:
     networks:
       - inception
     volumes:
-      - vol_wordpress:/var/www/
+      - vol_wordpress:/var/www/html
       - ./requirements/nginx/certs:/etc/nginx/ssl
     ports:
       - 443:443
