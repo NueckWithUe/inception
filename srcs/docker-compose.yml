@@ -4,11 +4,8 @@ services:
     build:
       context: .
       dockerfile: ./requirements/mariadb/Dockerfile
-      args:
-        - DB_NAME=$DB_NAME
-        - DB_USER=$DB_USER
-        - DB_PASS=$DB_PASS
-        - DB_HOST=$DB_HOST
+    env_file:
+      - ./.env
     networks:
       - inception
     volumes:
@@ -22,10 +19,8 @@ services:
     build:
       context: .
       dockerfile: ./requirements/wordpress/Dockerfile
-      args:
-        - DB_NAME=$DB_NAME
-        - DB_USER=$DB_USER
-        - DB_PASS=$DB_PASS
+    env_file:
+      - ./.env
     networks:
       - inception
     volumes:
@@ -41,8 +36,8 @@ services:
     build:
       context: .
       dockerfile: ./requirements/nginx/Dockerfile
-      args:
-        - DOMAIN_NAME=$DOMAIN_NAME
+    env_file:
+      - ./.env
     networks:
       - inception
     volumes:

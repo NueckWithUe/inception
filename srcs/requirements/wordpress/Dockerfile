@@ -1,21 +1,28 @@
-FROM debian:bullseye
+FROM alpine:3.20
 
-RUN apt-get update && apt-get install -y \
+RUN apk update && apk upgrade && apk add --no-cache -i \
 	php-fpm \
 	php-mysqli \
+	mariadb-client \
 	wget \
-	mariadb-client
+	unzip
 
-WORKDIR /var/www/html
+# RUN sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" \
+# 	  /etc/php-fpm.d/www.conf && \
+# 	sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" \
+# 	  /etc/php-fpm.d/www.conf && \
+# 	sed -i "s|;listen.group = nobody|listen.group = nobody|g" \
+# 	  /etc/php-fpm.d/www.conf
 
-RUN wget https://wordpress.org/latest.tar.gz && \
-	tar -xzf latest.tar.gz && \
-	mv wordpress/* . && \
-	rm -rf wordpress latest.tar.gz && \
-	sed -i 's|^listen = /run/php/php7.4-fpm.sock|listen = 9000|' /etc/php/7.4/fpm/pool.d/www.conf
+# WORKDIR /var/www/
 
-COPY ./requirements/wordpress/tools/own_wp_setup.sh .
+# RUN wget https://wordpress.org/latest.zip && \
+# 	unzip latest.zip && \
+# 	cp -rf wordpress/* . && \
+# 	rm -rf wordpress latest.zip
 
-RUN bash own_wp_setup.sh && rm own_wp_setup.sh
+# COPY ./requirements/wordpress/conf/config.sh .
 
-CMD ["/usr/sbin/php-fpm7.4", "-F"]
+# RUN sh config.sh && rm config.sh && chmod -R 0777 wp-content/
+
+CMD ["/usr/sbin/php-fpm", "-F"]

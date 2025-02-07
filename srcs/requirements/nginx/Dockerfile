@@ -1,17 +1,10 @@
-FROM debian:bullseye
+FROM alpine:3.20
 
-ARG DOMAIN_NAME
+RUN apk update && apk upgrade && apk add --no-cache -i nginx openssl
 
-RUN apt-get update && apt-get install -y nginx openssl && apt-get upgrade
+COPY ./requirements/nginx/tools/nginx.conf /etc/nginx/sites-available/
 
-COPY ./requirements/nginx/tools/website.txt .
+COPY ./requirements/nginx/certs/nnagel.42.fr.crt /etc/ssl/certs/nginx.crt
+COPY ./requirements/nginx/certs/nnagel.42.fr.key /etc/ssl/private/nginx.key
 
-RUN cat website.txt > /etc/nginx/sites-available/$DOMAIN_NAME \
-	&& rm website.txt \
-	&& ln -s /etc/nginx/sites-available/$DOMAIN_NAME /etc/nginx/sites-enabled/ \
-	&& mkdir -p /var/www/$DOMAIN_NAME \
-	&& chown -R www-data:www-data /var/www/$DOMAIN_NAME \
-	&& cp /var/www/html/index.nginx-debian.html /var/www/$DOMAIN_NAME/index.html \
-	&& mkdir -p /etc/nginx/ssl
-
-CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]
