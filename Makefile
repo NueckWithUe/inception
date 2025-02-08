@@ -4,7 +4,7 @@ all:		up
 
 up:
 			@mkdir -p ../data/vol_mariadb ../data/vol_wordpress
-			docker compose -f $(CONFIG_FILE) up --build
+			docker compose -f $(CONFIG_FILE) up --build -d
 
 down:
 			docker compose -f $(CONFIG_FILE) down

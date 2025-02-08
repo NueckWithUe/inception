@@ -1,7 +1,7 @@
 USE mysql;
 CREATE DATABASE IF NOT EXISTS wordpress;
 CREATE USER IF NOT EXISTS 'wpuser'@'%' IDENTIFIED BY 'secret';
-GRANT ALL PRIVILEGES ON wordpress.* TO 'wpuser'@'%';
+GRANT ALL PRIVILEGES ON wordpress.* TO 'wpuser'@'%' IDENTIFIED BY 'secret';
 FLUSH PRIVILEGES;
 ALTER USER 'root'@'%' IDENTIFIED BY 'wordpress';
 DROP DATABASE IF EXISTS test;
