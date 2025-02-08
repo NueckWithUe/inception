@@ -10,9 +10,7 @@ services:
       - inception
     volumes:
       - vol_mariadb:/var/lib/mysql
-    ports:
-      - 3306:3306
-    restart: on-failure
+    # restart: on-failure
 
   wordpress:
     container_name: wordpress
@@ -25,9 +23,7 @@ services:
       - inception
     volumes:
       - vol_wordpress:/var/www/html
-    ports:
-      - 9000:9000
-    restart: on-failure
+    # restart: on-failure
     depends_on:
       - mariadb
 
@@ -45,7 +41,7 @@ services:
       - ./requirements/nginx/certs:/etc/nginx/ssl
     ports:
       - 443:443
-    restart: on-failure
+    # restart: on-failure
     depends_on:
       - wordpress
 

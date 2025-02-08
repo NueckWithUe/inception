@@ -1,28 +1,28 @@
+# Use Alpine 3.20 as the base image
 FROM alpine:3.20
 
-RUN apk update && apk upgrade && apk add --no-cache -i \
-	php-fpm \
-	php-mysqli \
-	mariadb-client \
-	wget \
-	unzip
+# Install necessary packages
+RUN apk add --no-cache php82 php82-fpm php82-mysqli php82-pdo php82-pdo_mysql \
+	php82-mbstring php82-intl php82-opcache php82-xml php82-curl \
+	php82-gd php82-zip php82-tokenizer php82-ctype php82-session \
+	php82-json php82-iconv php82-simplexml \
+	unzip wget
 
-# RUN sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" \
-# 	  /etc/php-fpm.d/www.conf && \
-# 	sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" \
-# 	  /etc/php-fpm.d/www.conf && \
-# 	sed -i "s|;listen.group = nobody|listen.group = nobody|g" \
-# 	  /etc/php-fpm.d/www.conf
+# Set up PHP-FPM configuration
+RUN sed -i "s|listen = 127.0.0.1:9000|listen = 0.0.0.0:9000|" /etc/php82/php-fpm.d/www.conf \
+	&& sed -i "s|user = nobody|user = www-data|" /etc/php82/php-fpm.d/www.conf \
+	&& sed -i "s|group = nobody|group = www-data|" /etc/php82/php-fpm.d/www.conf \
+	&& sed -i "s|;clear_env = no|clear_env = no|" /etc/php82/php-fpm.d/www.conf
 
-# WORKDIR /var/www/
+# Create www-data user and group
+RUN adduser -S www-data -G www-data
 
-# RUN wget https://wordpress.org/latest.zip && \
-# 	unzip latest.zip && \
-# 	cp -rf wordpress/* . && \
-# 	rm -rf wordpress latest.zip
+WORKDIR /var/www/html
 
-# COPY ./requirements/wordpress/conf/config.sh .
+RUN wget https://wordpress.org/latest.zip && \
+	unzip latest.zip && \
+	cp -rf wordpress/* . && \
+	rm -rf wordpress latest.zip
 
-# RUN sh config.sh && rm config.sh && chmod -R 0777 wp-content/
-
-CMD ["/usr/sbin/php-fpm", "-F"]
+# Start PHP-FPM in the foreground with logging
+CMD ["php-fpm82", "-F"]
